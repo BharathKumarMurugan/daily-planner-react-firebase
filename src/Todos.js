@@ -7,8 +7,8 @@ import Todo from './Todo';
 
 function Todos() {
   useEffect(() => {
-    db.collection('todos').orderBy('timestamp','desc').onSnapshot(snapshot => {
-      setTodos(snapshot.docs.map(doc => ({id: doc.id ,todo: doc.data().todo})))
+    db.collection('todos').orderBy('createdAt','desc').onSnapshot(snapshot => {
+      setTodos(snapshot.docs.map(doc => ({id: doc.id, todo: doc.data().todo, status: doc.data().todoStatus})))
     })
   }, [])
   const [todos, setTodos] = useState([])
@@ -19,8 +19,8 @@ function Todos() {
 
     db.collection('todos').add({
       todo: input,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      // status:'todo'
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      todoStatus: false,
     })
     setInput('');
   }
@@ -34,7 +34,7 @@ function Todos() {
         </FormControl>
 
         <Button disabled={!input} type="submit" onClick={addTodo} variant="contained" color="primary">
-          Add Todo
+          Add
         </Button>
       </form>
 
@@ -42,7 +42,7 @@ function Todos() {
       <ul>
         
         {todos.map(todo => {
-          return <Todo key={todo.id} id={todo.id} text={todo.todo} timestamp={"Temp deadline..."} />
+          return <Todo key={todo.id} id={todo.id} text={todo.todo} todoStatus={todo.status}/>
         })}
       </ul>
     </div>
