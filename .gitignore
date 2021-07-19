@@ -120,6 +120,8 @@ dist
 
 # Hosting
 .firebase/
+.firebaserc
+firebase.json
 
 # Github
 .github/
